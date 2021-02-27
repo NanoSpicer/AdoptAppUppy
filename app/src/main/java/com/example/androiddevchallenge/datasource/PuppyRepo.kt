@@ -1,4 +1,4 @@
-package com.example.androiddevchallenge
+package com.example.androiddevchallenge.datasource
 
 import com.example.androiddevchallenge.model.Puppy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
