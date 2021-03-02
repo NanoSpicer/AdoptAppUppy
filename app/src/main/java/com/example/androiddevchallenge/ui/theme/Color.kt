@@ -25,4 +25,5 @@ val teal200 = Color(0xFF03DAC5)
 
 object AppColors {
     val boneWhite = Color(0xFFE3DAC9)
+    val engraving = Color(0xFF403F5F)
 }
