@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.*
 
 
 object PuppyRepo {
-    private val changeFlow = MutableStateFlow(Unit)
+    private val changeFlow = MutableStateFlow(0)
     private val pups: List<Puppy>
 
     private val puppyImages = listOf(
@@ -114,7 +114,7 @@ object PuppyRepo {
         val found = getPuppy(puppyId).first()?.toggleAdoption()?.let { true } ?: false
         if (found) {
             // Trigger a new emission for those that are consuming a Flow from getPuppies
-            changeFlow.value = Unit
+            changeFlow.value = changeFlow.value + 1
         }
         return found
     }
