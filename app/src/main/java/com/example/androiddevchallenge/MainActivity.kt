@@ -17,20 +17,32 @@ package com.example.androiddevchallenge
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androiddevchallenge.model.Puppy
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.ui.views.PuppyUI
+import com.example.androiddevchallenge.viewmodel.PuppyListViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val puppyListVM by viewModels<PuppyListViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                MyApp(puppyListVM)
             }
         }
     }
@@ -38,24 +50,33 @@ class MainActivity : AppCompatActivity() {
 
 // Start building your app here!
 @Composable
-fun MyApp() {
+fun MyApp(vm: PuppyListViewModel) {
+    val puppers = vm.pups.collectAsState(initial = emptyList()).value
     Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+        LazyColumn {
+            items(puppers) {
+                PuppyUI(puppy = it)
+            }
+        }
     }
 }
 
-@Preview("Light Theme", widthDp = 360, heightDp = 640)
+/*
+@Preview("Light Theme", widthDp = 360, heightDp = 320)
 @Composable
 fun LightPreview() {
+    val vm = PuppyListViewModel()
     MyTheme {
-        MyApp()
+        MyApp(vm)
     }
 }
 
-@Preview("Dark Theme", widthDp = 360, heightDp = 640)
+
+@Preview("Dark Theme", widthDp = 360, heightDp = 320)
 @Composable
 fun DarkPreview() {
+    val vm = PuppyListViewModel()
     MyTheme(darkTheme = true) {
-        MyApp()
+        MyApp(vm)
     }
-}
+}*/
