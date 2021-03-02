@@ -98,12 +98,7 @@ object PuppyRepo {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getPuppies() = changeFlow.flatMapLatest {
-        flow {
-            delay(300)
-            emit(pups)
-        }
-    }
+    fun getPuppies() = changeFlow.flatMapLatest { flowOf(pups) }
 
     fun getPuppy(puppyId: Long) = flow {
         emit(pups.find { it.id == puppyId })
