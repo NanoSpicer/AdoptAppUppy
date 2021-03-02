@@ -24,16 +24,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.livedata.observeAsState
+
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androiddevchallenge.model.Puppy
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.views.PuppyUI
@@ -41,13 +43,12 @@ import com.example.androiddevchallenge.viewmodel.PuppyListViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val puppyListVM by viewModels<PuppyListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp(puppyListVM)
+                MyApp()
             }
         }
     }
@@ -55,15 +56,13 @@ class MainActivity : AppCompatActivity() {
 
 // Start building your app here!
 @Composable
-fun MyApp(vm: PuppyListViewModel) {
-    val puppers = vm.pups.collectAsState(initial = emptyList()).value
+fun MyApp(vm: PuppyListViewModel =  viewModel()) {
+    val puppers by vm.pups.collectAsState(emptyList())
     Surface(color = MaterialTheme.colors.background) {
         Column {
             Toolbar()
             LazyColumn {
-                items(puppers) {
-                    PuppyUI(puppy = it, vm::seeDetails, vm::togglePuppyAdoption)
-                }
+                items(puppers) { pup ->  PuppyUI(pup, vm::seeDetails, vm::togglePuppyAdoption) }
             }
         }
     }
@@ -72,7 +71,10 @@ fun MyApp(vm: PuppyListViewModel) {
 @Composable
 fun Toolbar()  {
     Surface(
-        modifier = Modifier.fillMaxWidth().height(56.dp),
+        modifier =
+        Modifier
+            .fillMaxWidth()
+            .height(56.dp),
         color = MaterialTheme.colors.primarySurface,
         elevation = 16.dp
     ) {
