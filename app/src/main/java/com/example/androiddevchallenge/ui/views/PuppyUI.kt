@@ -3,10 +3,12 @@ package com.example.androiddevchallenge.ui.views
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -14,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.model.Puppy
 import com.example.androiddevchallenge.ui.theme.AppColors
@@ -27,12 +28,17 @@ internal val boneEdgeSize = 64.dp
 
 
 
-@Composable fun PuppyUI(puppy: Puppy, click: func<Puppy>?=null) {
+@Composable fun PuppyUI(puppy: Puppy, click: func<Puppy>?=null, onAdopt: func<Puppy>?=null) {
 
     Surface(
-        modifier = Modifier.fillMaxWidth()
+        modifier =
+        Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(click != null) { click?.invoke(puppy) }
     ){
-       SimplePuppy(puppy, click)
+       SimplePuppy(puppy, onAdopt)
     }
 }
 
@@ -60,13 +66,34 @@ internal val boneEdgeSize = 64.dp
 
 
 @Composable
-private fun SimplePuppy(puppy: Puppy, click: func<Puppy>?=null) = Column {
+private fun SimplePuppy(puppy: Puppy, onAdopt: func<Puppy>?=null) = Column {
 
     val pullImageDown = boneEdgeSize / 3
     val pullTextUp    = boneEdgeSize / 2
     val pullBallsToCenter = 12.dp
     val imageBitmap = painterResource(puppy.image)
+    val adoptBitmap = painterResource(if(!puppy.adopted) R.drawable.ic_paw else R.drawable.ic_remove)
+    val callToAction = if(!puppy.adopted) "Adopt me!" else "Let go"
 
+    Row(
+        modifier =
+        Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Button(
+            //modifier =  Modifier.padding(0.dp, 16.dp, 16.dp, 0.dp),
+            onClick = { onAdopt?.invoke(puppy) },
+            shape = CircleShape
+        ) {
+            Text(callToAction)
+            Spacer(Modifier.size(8.dp))
+            Image(adoptBitmap, contentDescription = "Action icon for adopting")
+        }
+    }
+
+    // Image
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -83,7 +110,7 @@ private fun SimplePuppy(puppy: Puppy, click: func<Puppy>?=null) = Column {
         )
     }
 
-    // Bone Content
+    // Bone banner
     Row(
         modifier =
         Modifier
@@ -109,8 +136,8 @@ private fun SimplePuppy(puppy: Puppy, click: func<Puppy>?=null) = Column {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = puppy.name)
-                Text(text = puppy.tagline)
+                Text(text = puppy.name, color = AppColors.engraving)
+                Text(text = puppy.tagline, color = AppColors.engraving)
             }
             Column(
                 Modifier
@@ -118,7 +145,7 @@ private fun SimplePuppy(puppy: Puppy, click: func<Puppy>?=null) = Column {
                     .shadow(1.dp)
                     .background(Color.Transparent)
                     .height((0.15).dp)
-                    .offset(x=6.dp, y=(0.15).dp)
+                    .offset(x = 6.dp, y = (0.15).dp)
                     .zIndex(1f)
 
             ) {
