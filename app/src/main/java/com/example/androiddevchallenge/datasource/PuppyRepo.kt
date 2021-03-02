@@ -1,5 +1,6 @@
 package com.example.androiddevchallenge.datasource
 
+import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.model.Puppy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -9,6 +10,30 @@ import kotlinx.coroutines.flow.*
 object PuppyRepo {
     private val changeFlow = MutableStateFlow(Unit)
     private val pups: List<Puppy>
+
+    private val puppyImages = listOf(
+        R.drawable._1,
+        R.drawable._2,
+        R.drawable._3,
+        R.drawable._4,
+        R.drawable._5,
+        R.drawable._6,
+        R.drawable._7,
+        R.drawable._8,
+        R.drawable._9,
+        R.drawable._10,
+        R.drawable._11,
+        R.drawable._12,
+        R.drawable._13,
+        R.drawable._14,
+        R.drawable._15,
+        R.drawable._16,
+        R.drawable._17,
+        R.drawable._18,
+        R.drawable._19,
+    )
+
+
     private val puppyNames = listOf(
         "Gordie",
         "Alice",
@@ -64,11 +89,11 @@ object PuppyRepo {
     )
 
     init {
-        pups = puppyNames.map { name ->
-            val nTags = (1..3).random()
-            val tagline = puppyTags.shuffled().take(nTags).joinToString()
+        pups = puppyImages.map { image ->
+            val name = puppyNames.random()
+            val tagline = puppyTags.random()
             val breed = puppyBreeds.random()
-            Puppy(name, tagline, breed)
+            Puppy(name, tagline, breed, image)
         }
     }
 
@@ -95,6 +120,8 @@ object PuppyRepo {
     }
 
 
-    private fun Puppy.toggleAdoption() { adopted = !adopted }
+    private fun Puppy.toggleAdoption() {
+        adopted = !adopted
+    }
 
 }
