@@ -8,7 +8,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -29,7 +29,6 @@ internal val boneEdgeSize = 64.dp
 
 
 @Composable fun PuppyUI(puppy: Puppy, click: func<Puppy>?=null, onAdopt: func<Puppy>?=null) {
-
     Surface(
         modifier =
         Modifier
@@ -67,13 +66,13 @@ internal val boneEdgeSize = 64.dp
 
 @Composable
 private fun SimplePuppy(puppy: Puppy, onAdopt: func<Puppy>?=null) = Column {
-
     val pullImageDown = boneEdgeSize / 3
     val pullTextUp    = boneEdgeSize / 2
     val pullBallsToCenter = 12.dp
+    val iconRef = if(puppy.adopted) R.drawable.ic_remove else R.drawable.ic_paw
+    val callToAction = if(!puppy.adopted) "Adopt me!" else "Let me go…"
     val imageBitmap = painterResource(puppy.image)
-    val adoptBitmap = painterResource(if(!puppy.adopted) R.drawable.ic_paw else R.drawable.ic_remove)
-    val callToAction = if(!puppy.adopted) "Adopt me!" else "Let go"
+    val adoptBitmap = painterResource(iconRef)
 
     Row(
         modifier =
@@ -157,6 +156,7 @@ private fun SimplePuppy(puppy: Puppy, onAdopt: func<Puppy>?=null) = Column {
         )
     }
 }
+
 
 
 @Preview("Puppy UI preview")
