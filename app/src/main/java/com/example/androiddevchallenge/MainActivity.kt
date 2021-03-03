@@ -17,32 +17,30 @@ package com.example.androiddevchallenge
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.primarySurface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.runtime.livedata.observeAsState
-
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.androiddevchallenge.model.Puppy
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.views.PuppyUI
 import com.example.androiddevchallenge.viewmodel.PuppyListViewModel
 
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,20 +54,21 @@ class MainActivity : AppCompatActivity() {
 
 // Start building your app here!
 @Composable
-fun MyApp(vm: PuppyListViewModel =  viewModel()) {
-    val puppers by vm.pups.collectAsState(emptyList())
+fun MyApp(vm: PuppyListViewModel = viewModel()) {
+    val puppersState = vm.pups.collectAsState(initial = emptyList())
+    val puppers = puppersState.value
     Surface(color = MaterialTheme.colors.background) {
         Column {
             Toolbar()
             LazyColumn {
-                items(puppers) { pup ->  PuppyUI(pup, vm::seeDetails, vm::togglePuppyAdoption) }
+                items(puppers) { pup -> PuppyUI(pup, vm::seeDetails, vm::togglePuppyAdoption) }
             }
         }
     }
 }
 
 @Composable
-fun Toolbar()  {
+fun Toolbar() {
     Surface(
         modifier =
         Modifier
@@ -78,13 +77,12 @@ fun Toolbar()  {
         color = MaterialTheme.colors.primarySurface,
         elevation = 16.dp
     ) {
-        Row (
+        Row(
             modifier = Modifier.padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text("Adopt App Puppy!", fontWeight = FontWeight.ExtraBold)
         }
-
     }
 }
 
