@@ -15,10 +15,13 @@
  */
 package com.example.androiddevchallenge.model
 
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import kotlinx.parcelize.Parcelize
 
 internal var IDS = 0L
 
+@Parcelize
 data class Puppy(
     val name: String,
     val tagline: String = "",
@@ -26,4 +29,4 @@ data class Puppy(
     @DrawableRes val image: Int,
     val adopted: Boolean = false,
     val id: Long = ++IDS,
-)
+) : Parcelable
