@@ -166,7 +166,8 @@ fun PupperDetails(pup: Puppy) = Column(Modifier.fillMaxWidth()){
                 
                 Can you resist his face? 🤩 
                 I can't; I'll adopt him if you don't 😉
-            """.trimIndent()
+            """.trimIndent(),
+        textAlign = TextAlign.Justify
     )
 
 }

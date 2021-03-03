@@ -31,10 +31,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -97,6 +97,7 @@ private fun SimplePuppy(puppy: Puppy, onAdopt: func<Puppy>? = null) = Column {
     val pullTextUp = boneEdgeSize / 2
     val pullBallsToCenter = 12.dp
     val iconRef = if (puppy.adopted) R.drawable.ic_remove else R.drawable.ic_paw
+    val color = if (!puppy.adopted) Color.Green else Color.Red
     val callToAction = if (!puppy.adopted) "Adopt me!" else "Let me go…"
     val imageBitmap = painterResource(puppy.image)
     val adoptBitmap = painterResource(iconRef)
@@ -109,7 +110,7 @@ private fun SimplePuppy(puppy: Puppy, onAdopt: func<Puppy>? = null) = Column {
         horizontalArrangement = Arrangement.End
     ) {
         Button(
-            // modifier =  Modifier.padding(0.dp, 16.dp, 16.dp, 0.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
             onClick = { onAdopt?.invoke(puppy) },
             shape = CircleShape
         ) {
