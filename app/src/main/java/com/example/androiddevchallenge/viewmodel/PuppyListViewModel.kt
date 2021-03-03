@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androiddevchallenge.datasource.PuppyRepo
 import com.example.androiddevchallenge.model.Puppy
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -28,11 +30,14 @@ class PuppyListViewModel : ViewModel() {
         println("FlowEmitted: $it")
     }
 
+    val puppyClicked = Channel<Puppy>()
+
     fun togglePuppyAdoption(puppy: Puppy) = viewModelScope.launch {
         PuppyRepo.toggleAdoption(puppy.id)
     }
 
     fun seeDetails(puppy: Puppy) {
+        puppyClicked.offer(puppy)
         println("seeDetails $puppy")
     }
 }

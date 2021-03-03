@@ -41,8 +41,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.model.Puppy
@@ -158,8 +162,11 @@ private fun SimplePuppy(puppy: Puppy, onAdopt: func<Puppy>? = null) = Column {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = puppy.name, color = AppColors.engraving)
-                Text(text = puppy.tagline, color = AppColors.engraving)
+                Text(
+                    text = puppy.name, textAlign = TextAlign.Center,color = AppColors.engraving,
+                    fontStyle = FontStyle.Italic, fontSize = 32.sp
+                )
+                Text(text = "the ${puppy.race.toLowerCase()}", textAlign = TextAlign.Center, color = AppColors.engraving)
             }
             Column(
                 Modifier

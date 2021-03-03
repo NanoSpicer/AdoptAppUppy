@@ -15,8 +15,10 @@
  */
 package com.example.androiddevchallenge
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,12 +37,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.views.PuppyUI
 import com.example.androiddevchallenge.viewmodel.PuppyListViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+
+    private val vm by viewModels<PuppyListViewModel>()
+
+    private val selectedPups by lazy { vm.puppyClicked.consumeAsFlow() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +59,17 @@ class MainActivity : AppCompatActivity() {
                 MyApp()
             }
         }
+        lifecycleScope.launch {
+            selectedPups.collect { pup ->
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                val extras = Bundle().apply {
+                    putParcelable("puppy", pup)
+                }
+                intent.putExtras(extras)
+                startActivity(intent)
+            }
+        }
+
     }
 }
 

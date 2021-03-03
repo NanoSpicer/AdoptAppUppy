@@ -98,7 +98,7 @@ object PuppyRepo {
         "Beagle",
         "Poodle",
         "Rottweiler",
-        "German Shorthaired Pointer",
+        "German Pointer",
         "Yorkshire Terrier",
         "Boxer"
     )
@@ -106,7 +106,8 @@ object PuppyRepo {
     init {
         pups = puppyImages.map { image ->
             val name = puppyNames.random()
-            val tagline = puppyTags.random()
+            val takeN = (2..5).random()
+            val tagline = puppyTags.toSet().toList().shuffled().take(takeN).joinToString(" ") { "#$it" }
             val breed = puppyBreeds.random()
             Puppy(name, tagline, breed, image)
         }
