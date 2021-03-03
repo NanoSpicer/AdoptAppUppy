@@ -20,7 +20,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.androiddevchallenge.datasource.PuppyRepo
 import com.example.androiddevchallenge.model.Puppy
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 

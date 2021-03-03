@@ -17,37 +17,37 @@ package com.example.androiddevchallenge
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.androiddevchallenge.datasource.PuppyRepo
-import com.example.androiddevchallenge.model.IDS
 import com.example.androiddevchallenge.model.Puppy
 import com.example.androiddevchallenge.ui.theme.MyTheme
-import com.example.androiddevchallenge.ui.views.PuppyUI
-import com.example.androiddevchallenge.viewmodel.PuppyListViewModel
 
 class DetailActivity : AppCompatActivity() {
 
@@ -74,7 +74,7 @@ fun DetailView(pup: Puppy?, goBack: () -> Unit) {
             val title =
                 pup?.let { "\uD83D\uDC36 ${it.name} – the ${it.race}" } ?: "Sorry, we couldn't find that pupper!"
             Toolbar(title = title, goBack)
-            if(pup != null) {
+            if (pup != null) {
                 PupperDetails(pup)
             } else {
                 Row(
@@ -122,13 +122,11 @@ fun Toolbar(title: String, goBack: () -> Unit) {
     }
 }
 
-
-
 @Composable
-fun PupperDetails(pup: Puppy) = Column(Modifier.fillMaxWidth()){
-    val adoptedText = if(pup.adopted) "You have adopted this dog!" else "You haven't adopted this dog"
-    val color = if(pup.adopted) Color.Green else Color.Red
-    val icon = if(pup.adopted) R.drawable.ic_paw else R.drawable.ic_remove
+fun PupperDetails(pup: Puppy) = Column(Modifier.fillMaxWidth()) {
+    val adoptedText = if (pup.adopted) "You have adopted this dog!" else "You haven't adopted this dog"
+    val color = if (pup.adopted) Color.Green else Color.Red
+    val icon = if (pup.adopted) R.drawable.ic_paw else R.drawable.ic_remove
     val iconBmp = painterResource(icon)
     val bmp = painterResource(pup.image)
     Image(
@@ -140,10 +138,10 @@ fun PupperDetails(pup: Puppy) = Column(Modifier.fillMaxWidth()){
             .fillMaxWidth()
             .height(242.dp)
     )
-    Text( modifier=Modifier.fillMaxWidth().padding(16.dp),text = pup.tagline, textAlign = TextAlign.Center, fontSize = 24.sp)
+    Text(modifier = Modifier.fillMaxWidth().padding(16.dp), text = pup.tagline, textAlign = TextAlign.Center, fontSize = 24.sp)
 
     Row(
-        modifier=Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         Image(
@@ -156,9 +154,9 @@ fun PupperDetails(pup: Puppy) = Column(Modifier.fillMaxWidth()){
     }
 
     Text(
-        modifier=Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
         text =
-            """
+        """
                 ${pup.name} is a very gooooooooood boyyyyy 🐕. 
                 
                 Runs around the house 🏠, plays fetch 🐕 , eats 🥫, farts 💨 and even sleeps 😴💤! 
@@ -166,12 +164,10 @@ fun PupperDetails(pup: Puppy) = Column(Modifier.fillMaxWidth()){
                 
                 Can you resist his face? 🤩 
                 I can't; I'll adopt him if you don't 😉
-            """.trimIndent(),
+        """.trimIndent(),
         textAlign = TextAlign.Justify
     )
-
 }
-
 
 @Preview
 @Composable
@@ -179,11 +175,11 @@ fun DetailView_Preview() {
     DetailView(
         Puppy(
             name = "Bobby",
-            tagline= "tagline",
+            tagline = "tagline",
             race = "race",
             image = R.drawable._1,
             adopted = false,
             id = -1L
         )
-    ){}
+    ) {}
 }
