@@ -24,6 +24,6 @@ data class Puppy(
     val tagline: String = "",
     val race: String,
     @DrawableRes val image: Int,
-    var adopted: Boolean = false,
+    val adopted: Boolean = false,
     val id: Long = ++IDS,
 )

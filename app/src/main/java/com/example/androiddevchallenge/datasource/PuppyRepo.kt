@@ -19,14 +19,13 @@ import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.model.Puppy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 
 object PuppyRepo {
     private val changeFlow = MutableStateFlow(0)
-    private val pups: List<Puppy>
+    private var pups: List<Puppy>
 
     private val puppyImages = listOf(
         R.drawable._1,
@@ -121,15 +120,16 @@ object PuppyRepo {
     }
 
     suspend fun toggleAdoption(puppyId: Long): Boolean {
-        val found = getPuppy(puppyId).first()?.toggleAdoption()?.let { true } ?: false
+        var found = false
+        pups = pups.map {
+            val isThePuppy = it.id == puppyId
+            found = found || isThePuppy
+            if (isThePuppy) it.copy(adopted = !it.adopted) else it.copy()
+        }
         if (found) {
             // Trigger a new emission for those that are consuming a Flow from getPuppies
             changeFlow.value = changeFlow.value + 1
         }
         return found
-    }
-
-    private fun Puppy.toggleAdoption() {
-        adopted = !adopted
     }
 }
