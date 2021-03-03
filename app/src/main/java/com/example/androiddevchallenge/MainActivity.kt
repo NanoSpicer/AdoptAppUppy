@@ -102,7 +102,7 @@ fun Toolbar() {
             modifier = Modifier.padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Adopt App Puppy!", fontWeight = FontWeight.ExtraBold)
+            Text("\uD83D\uDC3E \uD83D\uDC15 Adopt App Puppy! (get it?) \uD83D\uDC36", fontWeight = FontWeight.ExtraBold)
         }
     }
 }
